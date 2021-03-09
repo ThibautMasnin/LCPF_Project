@@ -1,4 +1,6 @@
 
+{-# OPTIONS_GHC -Wall #-}
+
 import CPL
 
 door1 :: Formula
@@ -11,7 +13,7 @@ constraint :: Formula
 constraint = Or (And (Var "p1") (Var "t2")) (And (Var "p2") (Var "t1"))
 
 reglement :: Formula
-reglement = Or (And door1 (Not door2)) (And (Not door1) door2)
+reglement = Or door1 door2
 
 challenge1 :: Formula 
 challenge1 = And reglement constraint
