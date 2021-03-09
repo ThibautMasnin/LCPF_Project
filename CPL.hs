@@ -1,4 +1,3 @@
-
 {-# OPTIONS_GHC -Wall #-}
 
 module CPL where
@@ -42,9 +41,8 @@ sat w (Eqv phi psi) = sat w (Imp phi psi) && sat w (Imp psi phi)
 findWorlds :: Formula -> [World]
 findWorlds phi = findWorldsAux phi (genAllWorlds (getVars phi))
 
-findWorldsAux :: Formula -> [World] -> [World]
-findWorldsAux phi (w:allW)
-    | allW == [] && sat w phi = [w]
-    | allW == [] = []
-    | sat w phi = [w] ++ findWorldsAux phi allW
-    | otherwise = [] ++ findWorldsAux phi allW 
+findWorldsAux :: Formula -> [World]  -> [World]
+findWorldsAux _ []  = []
+findWorldsAux  phi (w:allW)
+    | sat w phi = w : findWorldsAux phi allW
+    | otherwise = findWorldsAux phi allW 
