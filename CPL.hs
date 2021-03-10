@@ -12,17 +12,28 @@ data Formula = T
     | Eqv   Formula Formula
     deriving (Eq, Show)
 
-getVars :: Formula -> [String]
-getVars T = []
-getVars F = []
-getVars (Var s) = [s]
-getVars (Not phi) = getVars phi
-getVars (And phi psi) = getVars phi ++ getVars psi
-getVars (Or phi psi) = getVars phi ++ getVars psi
-getVars (Imp phi psi) = getVars phi ++ getVars psi
-getVars (Eqv phi psi) = getVars phi ++ getVars psi
-
 type World = [String]
+
+supprDoublons :: [String] -> [String] -> [String]
+supprDoublons [] sortie = sortie
+supprDoublons (x:entre) sortie
+    | x `elem` sortie = supprDoublons entre sortie
+    | otherwise = supprDoublons entre (x:sortie)
+
+getVars :: Formula -> [String]
+getVars phi = supprDoublons (getVarsAux phi) []
+
+getVarsAux :: Formula -> [String]
+getVarsAux T = []
+getVarsAux F = []
+getVarsAux (Var s) = [s]
+getVarsAux (Not phi) = getVarsAux phi
+getVarsAux (And phi psi) = getVarsAux phi ++ getVarsAux psi
+getVarsAux (Or phi psi) = getVarsAux phi ++ getVarsAux psi
+getVarsAux (Imp phi psi) = getVarsAux phi ++ getVarsAux psi
+getVarsAux (Eqv phi psi) = getVarsAux phi ++ getVarsAux psi
+
+
 genAllWorlds :: [String] -> [World]
 genAllWorlds [] = []
 genAllWorlds (x:xs) = [x] : map (x :) (genAllWorlds xs) ++ genAllWorlds xs
