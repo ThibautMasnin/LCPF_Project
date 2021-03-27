@@ -2,19 +2,19 @@
 
 module EL where
 
-type Prop = [Char]
-type Agent = [Char]
+type Prop = String
+type Agent = String
 type World = Int
 type EpiState = (Prop -> [World], Agent -> World -> [World], World)
 
 data EpiFormula = T
     | F
-    | Var String
+    | Var Prop
     | Not EpiFormula
     | And EpiFormula EpiFormula
     | Or EpiFormula EpiFormula
     | Imp EpiFormula EpiFormula
     | Eqv EpiFormula EpiFormula
-    | Knows String EpiFormula
+    | Knows Agent EpiFormula
     | After EpiFormula EpiFormula
     deriving (Eq, Show)
