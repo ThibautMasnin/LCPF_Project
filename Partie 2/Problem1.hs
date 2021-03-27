@@ -31,7 +31,8 @@ bobIgn :: EpiFormula
 bobIgn = And (Not(Knows "b" (Var "bs"))) (Not(Knows "b" (Not (Var "bs"))))
 
 problem1 :: EpiFormula
-problem1 = And
-(And aliceIgn bobIgn)
-(After fatherAnn 
-(And (And aliceIgn (Not bobIgn)) (After (Not bobIgn) (Not aliceIgn))))
+problem1 = 
+    And (And aliceIgn bobIgn)
+        (After  fatherAnn 
+                (And (And aliceIgn (Not bobIgn)) (After (Not bobIgn) (Not aliceIgn)))
+        )
