@@ -17,7 +17,7 @@ interp _    = []
 
 indis :: Agent -> World -> [World]
 
-indis "b" 01 = [01]
+indis "a" 01 = [01]
 indis "b" 10 = [10]
 
 indis "a" 10 = [10, 12]
@@ -44,10 +44,12 @@ s0 :: EpiState
 s0 = (interp, indis, 12)
 
 anneIgn :: EpiFormula
-anneIgn = 
+anneIgn = And   (And (Not(Knows "a" (Var "b0"))) (Not(Knows "a" (Not (Var "b2")))))
+                (And (Not(Knows "a" (Var "b3"))) (Not(Knows "a" (Not (Var "b4")))))
 
-billIgnorance :: EpiFormula
-billIgnorance = 
+billIgn :: EpiFormula
+billIgn = And   (And (Not(Knows "b" (Var "a0"))) (Not(Knows "b" (Not (Var "a1")))))
+                (And (Not(Knows "b" (Var "a3"))) (Not(Knows "b" (Not (Var "a4")))))
 
 problem4 :: EpiFormula
 problem4 = 
