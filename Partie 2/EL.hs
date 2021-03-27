@@ -33,3 +33,6 @@ epiSat (interp, indis, w) (After phi psi) = (epiSat (interp, indis, w) phi) && (
 
 update :: EpiState -> EpiFormula -> EpiState
 update (interp, indis, w) phi =
+    let newInterp p = filter (\x-> (epiSat (interp, indis, x) phi)) (interp p)
+        newIndis a newW = filter (\x-> (epiSat (interp, indis, x) phi)) (indis a newW)
+    in (newInterp, newIndis, w)
