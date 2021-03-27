@@ -52,4 +52,7 @@ billIgn = And   (And (Not(Knows "b" (Var "a0"))) (Not(Knows "b" (Not (Var "a1"))
                 (And (Not(Knows "b" (Var "a3"))) (Not(Knows "b" (Not (Var "a4")))))
 
 problem4 :: EpiFormula
-problem4 = 
+problem4 = And 
+    (And anneIgn billIgn) 
+    (After anneIgn 
+    (After billIgn (Not anneIgn)))
