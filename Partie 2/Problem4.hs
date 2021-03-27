@@ -44,12 +44,29 @@ s0 :: EpiState
 s0 = (interp, indis, 12)
 
 anneIgn :: EpiFormula
-anneIgn = And   (And (Not(Knows "a" (Var "b0"))) (Not(Knows "a" (Not (Var "b2")))))
-                (And (Not(Knows "a" (Var "b3"))) (Not(Knows "a" (Not (Var "b4")))))
+anneIgn = 
+    Or 
+    (Or 
+    (And (Not (Knows "a" (Var "b0"))) (Not (Knows "a" (Not (Var "b0"))))) 
+    (And (Not (Knows "a" (Var "b1"))) (Not (Knows "a" (Not (Var "b1"))))))
+    (Or 
+    (And (Not (Knows "a" (Var "b2"))) (Not (Knows "a" (Not (Var "b2"))))) 
+    (Or 
+    (And (Not (Knows "a" (Var "b3"))) (Not (Knows "a" (Not (Var "b3")))))
+    (And (Not (Knows "a" (Var "b4"))) (Not (Knows "a" (Not (Var "b4")))))))
+
 
 billIgn :: EpiFormula
-billIgn = And   (And (Not(Knows "b" (Var "a0"))) (Not(Knows "b" (Not (Var "a1")))))
-                (And (Not(Knows "b" (Var "a3"))) (Not(Knows "b" (Not (Var "a4")))))
+billIgn =
+    Or  
+    (Or 
+    (And (Not (Knows "b" (Var "a0"))) (Not (Knows "b" (Not (Var "a0"))))) 
+    (And (Not (Knows "b" (Var "a1"))) (Not (Knows "b" (Not (Var "a1"))))))
+    (Or 
+    (And (Not (Knows "b" (Var "a2"))) (Not (Knows "b" (Not (Var "a2"))))) 
+    (Or 
+    (And (Not (Knows "a" (Var "a3"))) (Not (Knows "a" (Not (Var "a3")))))
+    (And (Not (Knows "b" (Var "a4"))) (Not (Knows "b" (Not (Var "a4")))))))
 
 problem4 :: EpiFormula
 problem4 = And 
