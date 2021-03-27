@@ -21,4 +21,17 @@ indis _ _ = []
 s0 :: EpiState
 s0 = (interp, indis, 01)
 
+fatherAnn :: EpiFormula
+fatherAnn = Or (Var "as") (Or (Var "bs") (And (Var "as") (Var "bs"))) 
 
+aliceIgn :: EpiFormula
+aliceIgn = And (Not(Knows "a" (Var "as"))) (Not(Knows "a" (Not (Var "as"))))
+
+bobIgn :: EpiFormula
+bobIgn = And (Not(Knows "b" (Var "bs"))) (Not(Knows "b" (Not (Var "bs"))))
+
+problem1 :: EpiFormula
+problem1 = And
+(And aliceIgn bobIgn)
+(After fatherAnn 
+(And (And aliceIgn (Not bobIgn)) (After (Not bobIgn) (Not aliceIgn))))
