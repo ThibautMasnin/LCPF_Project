@@ -34,5 +34,5 @@ problem2 :: EpiFormula
 problem2 = 
     And (And aliceIgn bobIgn)
         (After  fatherAnn 
-                (And (And aliceIgn bobIgn) (And (After bobIgn (Not aliceIgn)) (After aliceIgn (Not aliceIgn))))
+                (After (And aliceIgn bobIgn) (And (Not aliceIgn) (Not bobIgn)))
         )
