@@ -1,4 +1,6 @@
 
+{-# OPTIONS_GHC -Wall #-} 
+
 import CPL
 
 door1 :: Formula

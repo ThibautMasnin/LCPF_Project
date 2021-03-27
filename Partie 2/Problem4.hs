@@ -70,6 +70,6 @@ billIgn =
 
 problem4 :: EpiFormula
 problem4 = And 
-    (And anneIgn billIgn) 
-    (After anneIgn 
-    (After billIgn (Not anneIgn)))
+        (And anneIgn billIgn) 
+        (After anneIgn 
+        (After billIgn (Not anneIgn)))
