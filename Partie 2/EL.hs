@@ -29,7 +29,7 @@ epiSat s (Or phi psi) = epiSat s phi || epiSat s psi
 epiSat s (Imp phi psi) = not(epiSat s phi) || epiSat s psi
 epiSat s (Eqv phi psi) = epiSat s (Imp phi psi) && epiSat s (Imp psi phi)
 epiSat (interp, indis, w) (Knows a phi) = all (\x->(epiSat (interp, indis, x) phi)) (indis a w)
-epiSat s (After phi psi) = 
+epiSat (interp, indis, w) (After phi psi) = (epiSat (interp, indis, w) phi) && (epiSat(update(interp, indis, w) phi) psi)
 
 update :: EpiState -> EpiFormula -> EpiState
-update s phi = 
+update (interp, indis, w) phi =
