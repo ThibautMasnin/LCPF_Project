@@ -22,7 +22,7 @@ data EpiFormula = T
 epiSat :: EpiState -> EpiFormula -> Bool
 epiSat _ T = True
 epiSat _ F = False
-epiSat (interp, _, w) (Var p) = interp p `elem` w
+epiSat (interp, _, w) (Var p) = w `elem` interp p
 epiSat s (Not phi) = not (epiSat s phi)
 epiSat s (And phi psi) = epiSat s phi && epiSat s psi
 epiSat s (Or phi psi) = epiSat s phi || epiSat s psi
@@ -33,6 +33,7 @@ epiSat (interp, indis, w) (After phi psi) = (epiSat (interp, indis, w) phi) && (
 
 update :: EpiState -> EpiFormula -> EpiState
 update (interp, indis, w) phi =
-    let newInterp p = filter (\x-> (epiSat (interp, indis, x) phi)) (interp p)
+    let 
+        newInterp p = filter (\x-> (epiSat (interp, indis, x) phi)) (interp p)
         newIndis a newW = filter (\x-> (epiSat (interp, indis, x) phi)) (indis a newW)
     in (newInterp, newIndis, w)
