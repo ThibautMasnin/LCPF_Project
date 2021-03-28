@@ -70,7 +70,7 @@ update (interp, indis, w) phi =
     in (newInterp, newIndis, w)
 
 testUpdate :: [Bool]
-testUpdate = [  ] 
+testUpdate = [ epiSat (update (interpTest, indisTest, 00) F) T == True ] 
     
 {-test : fonction qui reçoit les résultats d’un test et qui retourne vrai
 si tous les résultats du test sont vrai et faux sinon.-}
