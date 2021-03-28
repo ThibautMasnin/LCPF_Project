@@ -2,6 +2,7 @@
 
 module CPL where
 
+{-data Formula : Exprime les épreuves sous la forme d’une formule logique-}
 data Formula = T
     | F
     | Var String
@@ -12,16 +13,18 @@ data Formula = T
     | Eqv   Formula Formula
     deriving (Eq, Show)
 
+{-type world = Représente le type des mondes possibles-}
 type World = [String]
+
+{-getVars / supprDoublons / getVarsAux : Fonction auxiliaire qui “extrait” les noms de variables de la formule-}
+getVars :: Formula -> [String]
+getVars phi = supprDoublons (getVarsAux phi) []
 
 supprDoublons :: [String] -> [String] -> [String]
 supprDoublons [] sortie = sortie
 supprDoublons (x:entre) sortie
     | x `elem` sortie = supprDoublons entre sortie
     | otherwise = supprDoublons entre (x:sortie)
-
-getVars :: Formula -> [String]
-getVars phi = supprDoublons (getVarsAux phi) []
 
 getVarsAux :: Formula -> [String]
 getVarsAux T = []
@@ -33,11 +36,14 @@ getVarsAux (Or phi psi) = getVarsAux phi ++ getVarsAux psi
 getVarsAux (Imp phi psi) = getVarsAux phi ++ getVarsAux psi
 getVarsAux (Eqv phi psi) = getVarsAux phi ++ getVarsAux psi
 
-
+{-genAllworlds : pour une liste de noms de variables propositionnels,
+génère la liste de tous les mondes possibles pour ces variables-}
 genAllWorlds :: [String] -> [World]
 genAllWorlds [] = []
 genAllWorlds (x:xs) = [x] : map (x :) (genAllWorlds xs) ++ genAllWorlds xs
 
+{-sat : pour un monde possible w et une formule phi passés en arguments, vérifie si w
+satisfait phi-}
 sat :: World -> Formula -> Bool
 sat _ T = True
 sat _ F = False
@@ -48,7 +54,8 @@ sat w (Or phi psi) = sat w phi || sat w psi
 sat w (Imp phi psi) = not(sat w phi) || sat w psi
 sat w (Eqv phi psi) = sat w (Imp phi psi) && sat w (Imp psi phi)
 
-
+{-findWorlds / findWorldsAux : pour une formule phi renvoie la liste de tous mondes possibles qui
+satisfont phi.-}
 findWorlds :: Formula -> [World]
 findWorlds phi = findWorldsAux phi (genAllWorlds (getVars phi))
 
