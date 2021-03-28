@@ -46,3 +46,6 @@ problem2 =
         (After  fatherAnn 
                 (After (And aliceIgn bobIgn) (And (Not aliceIgn) (Not bobIgn)))
         )
+
+testProblem2 :: Bool
+testProblem2 = epiSat s0 problem2

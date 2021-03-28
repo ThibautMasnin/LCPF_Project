@@ -82,3 +82,6 @@ problem3 = And (And aliceIgn (And bobIgn carolineIgn)) (After fatherAnn (After
     (And aliceIgn (And bobIgn carolineIgn)) (After 
     (And aliceIgn (And bobIgn carolineIgn)) (And 
     (Not aliceIgn) (And (Not bobIgn) (Not carolineIgn))))))
+    
+testProblem3 :: Bool
+testProblem3 = epiSat s0 problem3

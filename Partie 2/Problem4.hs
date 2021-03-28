@@ -81,3 +81,6 @@ problem4 = And
         (And anneIgn billIgn) 
         (After anneIgn 
         (After billIgn (Not anneIgn)))
+
+testProblem4 :: Bool
+testProblem4 = epiSat s0 problem4

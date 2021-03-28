@@ -41,6 +41,25 @@ epiSat s (Eqv phi psi) = epiSat s (Imp phi psi) && epiSat s (Imp psi phi)
 epiSat (interp, indis, w) (Knows a phi) = all (\x->(epiSat (interp, indis, x) phi)) (indis a w)
 epiSat (interp, indis, w) (After phi psi) = (epiSat (interp, indis, w) phi) && (epiSat(update(interp, indis, w) phi) psi)
 
+interpTest :: Prop -> [World]
+interpTest "as" = [10, 11]
+interpTest "bs" = [01, 11]
+interpTest _    = [] 
+
+indisTest :: Agent -> World -> [World]
+indisTest "a" 00 = [00, 10]
+indisTest "b" 00 = [00, 01]
+indisTest "a" 01 = [01, 11]
+indisTest "b" 01 = [01, 00]
+indisTest "a" 10 = [10, 00]
+indisTest "b" 10 = [10, 11]
+indisTest "a" 11 = [11, 01]
+indisTest "b" 11 = [11, 10]
+indisTest _ _ = []
+
+testEpiSat :: [Bool]
+testEpiSat = [ epiSat (interpTest, indisTest, 01) (And (And (And (Not(Knows "a" (Var "as"))) (Not(Knows "a" (Not (Var "as"))))) (And (Not(Knows "b" (Var "bs"))) (Not(Knows "b" (Not (Var "bs")))))) (After (Or (Var "as") (Or (Var "bs") (And (Var "as") (Var "bs")))) (And (And (And (Not(Knows "a" (Var "as"))) (Not(Knows "a" (Not (Var "as"))))) (Not (And (Not(Knows "b" (Var "bs"))) (Not(Knows "b" (Not (Var "bs"))))))) (After (Not (And (Not(Knows "b" (Var "bs"))) (Not(Knows "b" (Not (Var "bs")))))) (Not (And (Not(Knows "a" (Var "as"))) (Not(Knows "a" (Not (Var "as")))))))))) == True ]
+
 {-update : prend un état épistémique s et une formule phi et
 renvoie un nouvel état épistémique correspondant à la mise à jour de s par phi-}
 update :: EpiState -> EpiFormula -> EpiState
@@ -49,3 +68,19 @@ update (interp, indis, w) phi =
         newInterp p = filter (\x-> (epiSat (interp, indis, x) phi)) (interp p)
         newIndis a newW = filter (\x-> (epiSat (interp, indis, x) phi)) (indis a newW)
     in (newInterp, newIndis, w)
+
+testUpdate :: [Bool]
+testUpdate = [  ] 
+    
+{-test : fonction qui reçoit les résultats d’un test et qui retourne vrai
+si tous les résultats du test sont vrai et faux sinon.-}
+test :: [Bool] -> Bool 
+test [] = True
+test x = all (==True) x
+
+{- testAll : Fonction qui retourne "Success!" si tous les résultats des tests de toutes 
+les fonctions sont vrais, sinon "Fail!"-}
+testAll :: [Char]
+testAll 
+    | test(testEpiSat) && test(testUpdate) = "Success!"
+    | otherwise = "Fail!"
