@@ -1,7 +1,10 @@
 {-# OPTIONS_GHC -Wall #-}
 
+module Problem4 where
 import EL
 
+{- interp : prend une proposition en argument et renvoie 
+la liste de mondes possibles où la proposition est vraie-}
 interp :: Prop -> [World]
 interp "a0" = [01]
 interp "b0" = [10]
@@ -15,6 +18,8 @@ interp "a4" = [43]
 interp "b4" = [34]
 interp _    = [] 
 
+{-indis : prend un agent i et un monde possible w en arguments et renvoie 
+la liste de mondes possibles qui sont indiscernables du monde w pour l’agent i-}
 indis :: Agent -> World -> [World]
 
 indis "a" 01 = [01]
@@ -40,9 +45,11 @@ indis "b" 34 = [34]
 
 indis _ _ = []
 
+{-s0 : définition complète de l’état épistémique initial du problème-}
 s0 :: EpiState
 s0 = (interp, indis, 12)
 
+{-aliceIgn : Exprime l’ignorance d’Alice sur son état-}
 anneIgn :: EpiFormula
 anneIgn = 
     Or 
@@ -55,7 +62,7 @@ anneIgn =
     (And (Not (Knows "a" (Var "b3"))) (Not (Knows "a" (Not (Var "b3")))))
     (And (Not (Knows "a" (Var "b4"))) (Not (Knows "a" (Not (Var "b4")))))))
 
-
+{-billIgn : Exprime l’ignorance de Bill sur son état-}
 billIgn :: EpiFormula
 billIgn =
     Or  
@@ -68,6 +75,7 @@ billIgn =
     (And (Not (Knows "a" (Var "a3"))) (Not (Knows "a" (Not (Var "a3")))))
     (And (Not (Knows "b" (Var "a4"))) (Not (Knows "b" (Not (Var "a4")))))))
 
+{-problem4 : Exprime le problème 4 dans sa totalité-}
 problem4 :: EpiFormula
 problem4 = And 
         (And anneIgn billIgn) 

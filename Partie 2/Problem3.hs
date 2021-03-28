@@ -1,13 +1,18 @@
 {-# OPTIONS_GHC -Wall #-}
 
+module Problem3 where
 import EL
 
+{- interp : prend une proposition en argument et renvoie 
+la liste de mondes possibles où la proposition est vraie-}
 interp :: Prop -> [World]
 interp "as" = [100, 110, 101, 111]
 interp "bs" = [010, 110, 011, 111]
 interp "cs" = [001, 011, 101, 111]
 interp _    = []
 
+{-indis : prend un agent i et un monde possible w en arguments et renvoie 
+la liste de mondes possibles qui sont indiscernables du monde w pour l’agent i-}
 indis :: Agent -> World -> [World]
 
 indis "a" 000 = [000, 100]
@@ -44,9 +49,11 @@ indis "c" 111 = [111, 110]
 
 indis _ _ = []
 
+{-s0 : définition complète de l’état épistémique initial du problème-}
 s0 :: EpiState
 s0 = (interp, indis, 111)
 
+{-fatherAnn : Exprime l’annonce du père-}
 fatherAnn :: EpiFormula
 fatherAnn = (Or (Var "as") (Or 
     (Var "bs") (Or 
@@ -57,15 +64,19 @@ fatherAnn = (Or (Var "as") (Or
     (Var "as") (And 
     (Var "bs") (Var "cs")))))))))
 
+{-aliceIgn : Exprime l’ignorance d’Alice sur son état-}
 aliceIgn :: EpiFormula
 aliceIgn = And (Not (Knows "a" (Var "as"))) (Not (Knows "a" (Not (Var "as"))))
-    
+
+{-bobIgn : Exprime l’ignorance de Bob sur son état-} 
 bobIgn :: EpiFormula
 bobIgn = And (Not (Knows "b" (Var "bs"))) (Not (Knows "b" (Not (Var "bs"))))
 
+{-carolineIgn : Exprime l’ignorance de caroline sur son état-} 
 carolineIgn :: EpiFormula
 carolineIgn = And (Not (Knows "c" (Var "cs"))) (Not (Knows "c" (Not (Var "cs"))))
 
+{-problem3 : Exprime le problème 3 dans sa totalité-}
 problem3 :: EpiFormula
 problem3 = And (And aliceIgn (And bobIgn carolineIgn)) (After fatherAnn (After 
     (And aliceIgn (And bobIgn carolineIgn)) (After 
