@@ -1,7 +1,6 @@
-
 {-# OPTIONS_GHC -Wall #-} 
  
- module Cha2 where
+module Cha2 where
 import CPL 
  
 {-door1 : "Une au moins de deux cellules contient une princesse"-}
@@ -17,8 +16,8 @@ une princesse (en même temps) dans chaque cellule-}
 constraint :: Formula 
 constraint = And (Eqv (Var "p1") (Not (Var "t1"))) (Eqv (Var "p2") (Not (Var "t2"))) 
  
- {-reglement :  "Les affiches disent toutes les deux la vérité 
- ou bien mentent toutes les deux"-}
+ {-reglement :  "Elles sont sincères toutes
+les deux, ou bien elles sont fausses toutes les deux"-}
 reglement :: Formula 
 reglement = Or (And door1 door2) (And (Not door1) (Not door2)) 
  
