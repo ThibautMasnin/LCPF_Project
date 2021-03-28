@@ -42,6 +42,12 @@ genAllWorlds :: [String] -> [World]
 genAllWorlds [] = []
 genAllWorlds (x:xs) = [x] : map (x :) (genAllWorlds xs) ++ genAllWorlds xs
 
+testGenWorlds :: [Bool] 
+testGenWorlds = [
+        genAllWorlds ["p1"] == [["p1"]],
+        genAllWorlds ["p1", "t2"] == [["p1"],["p1","t2"],["t2"]]]
+
+
 {-sat : pour un monde possible w et une formule phi passés en arguments, vérifie si w
 satisfait phi-}
 sat :: World -> Formula -> Bool
@@ -54,6 +60,12 @@ sat w (Or phi psi) = sat w phi || sat w psi
 sat w (Imp phi psi) = not(sat w phi) || sat w psi
 sat w (Eqv phi psi) = sat w (Imp phi psi) && sat w (Imp psi phi)
 
+testSat :: [Bool]
+testSat = [
+        sat ["p1", "p2"] (And (Var "p1") (Var "p2")) == True,
+        sat ["p1", "t2"] (And (Eqv (Var "p1") (Not (Var "t1"))) (Eqv (Var "p2") (Not (Var "t2")))) == True]
+
+
 {-findWorlds / findWorldsAux : pour une formule phi renvoie la liste de tous mondes possibles qui
 satisfont phi.-}
 findWorlds :: Formula -> [World]
@@ -64,3 +76,21 @@ findWorldsAux _ []  = []
 findWorldsAux  phi (w:allW)
     | sat w phi = w : findWorldsAux phi allW
     | otherwise = findWorldsAux phi allW 
+
+testFindWorlds :: [Bool]
+testFindWorlds = [
+    findWorlds (And (Var "p1") (Var "t2")) == [["t2","p1"]],
+    findWorlds (And (Eqv (Var "p1") (Not (Var "t1"))) (Eqv (Var "p2") (Not (Var "t2")))) == [["t2","t1"],["t2","p1"],["p2","t1"],["p2","p1"]]]
+
+{-test : fonction qui reçoit les résultats d’un test et qui retourne vrai
+si tous les résultats du test sont vrai et faux sinon.-}
+test :: [Bool] -> Bool 
+test [] = True
+test x = all (==True) x
+
+{- testAll : Fonction qui retourne "Success!" si tous les résultats des tests de toutes 
+les fonctions sont vrais, sinon "Fail!"-}
+testAll :: [Char]
+testAll 
+    | test(testGenWorlds) && test(testSat) && test(testFindWorlds) = "Success!"
+    | otherwise = "Fail!"
