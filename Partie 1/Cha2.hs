@@ -24,3 +24,6 @@ reglement = Or (And door1 door2) (And (Not door1) (Not door2))
 {-challenge2 : fait la conjonction de toutes les formules de la première épreuve-}
 challenge2 :: Formula 
 challenge2 = And constraint reglement
+
+testChallenge2 :: Bool
+testChallenge2 = sat ["t1", "p2"] challenge2

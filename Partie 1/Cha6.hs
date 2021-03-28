@@ -28,3 +28,6 @@ reglement = Or (And door1 (And (Not door2) (Not door3))) (Or (And door2 (And (No
 {-challenge6 : fait la conjonction de toutes les formules de la première épreuve-}
 challenge6 :: Formula 
 challenge6 = And reglement constraint
+
+testChallenge6 :: Bool
+testChallenge6 = sat ["p1", "t2", "t3"] challenge6

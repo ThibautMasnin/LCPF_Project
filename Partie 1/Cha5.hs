@@ -25,3 +25,6 @@ reglement = And (And (Imp (Var "p1") door1) (Imp (Var "t1") (Not door1))) (And (
 {-challenge5 : fait la conjonction de toutes les formules de la première épreuve-}
 challenge5 :: Formula 
 challenge5 = And reglement constraint
+
+testChallenge5 :: Bool
+testChallenge5 = sat ["p1", "t2"] challenge5
